@@ -21,6 +21,8 @@ from langchain.vectorstores import Chroma
 from langchain.vectorstores.base import VectorStore
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
+from prompt import PROMPT, EXAMPLE_PROMPT
+
 
 def process_file(*, file: AskFileResponse) -> List[Document]:
     """Processes one PDF file from a Chainlit AskFileResponse
@@ -57,8 +59,7 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
         #     chunk_overlap=20,
         # )
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=2000,
-            chunk_overlap=100
+            chunk_size=2000, chunk_overlap=100
         )
         docs = text_splitter.split_documents(documents)
 
@@ -73,7 +74,9 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
     return docs
 
 
-def create_search_engine(*, docs: List[Document], embeddings: Embeddings) -> VectorStore:
+def create_search_engine(
+    *, docs: List[Document], embeddings: Embeddings
+) -> VectorStore:
     """Takes a list of Langchain Documents and an embedding
     model API wrapper and build a search index using a
     VectorStore.
@@ -187,7 +190,8 @@ async def on_chat_start():
     chain = RetrievalQAWithSourcesChain.from_chain_type(
         llm=llm,
         chain_type="stuff",
-        retriever=search_engine.as_retriever()
+        retriever=search_engine.as_retriever(max_tokens_limit=4097),
+        chain_type_kwargs={"prompt": PROMPT, "document_prompt": EXAMPLE_PROMPT},
     )
 
     # Let's save the chain from user_session so we do not have
@@ -207,7 +211,7 @@ async def main(message: cl.Message):
 
     response = await chain.acall(
         message.content,
-        callbacks=[cl.AsyncLangchainCallbackHandler(stream_final_answer=True)]
+        callbacks=[cl.AsyncLangchainCallbackHandler(stream_final_answer=True)],
     )
     answer = response["answer"]
     sources = response["sources"].strip()

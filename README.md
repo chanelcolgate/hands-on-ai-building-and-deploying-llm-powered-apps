@@ -188,3 +188,27 @@ In Lab 2, we created the basic scaffold of our Chat with PDF App. In Lab 3, we a
 Now we have search engine setup, our Chat with PDF application can do RAG architecture pattern. Please use the appropriate RetrievalQA Chain from Langchain.
 
 Remember, we would want to set the model temperature to 0 to ensure model outputs do not vary across runs, and we would want to also return sources to our answers.
+
+## Lab6: Setup Prompting
+
+Now our Chat with PDf application is up and running, but we run into a very slight problem: one of the key questions is not working despite that there's ample information in the PDF documents!!!
+
+We can "fix" this is via prompt engineering. Prompt Engineering refers to methods for how to communicate with LLM to steer its behavior for desired outcomes without updating the model weights.
+
+Before we can do that, we need to extract the prompt template out of the code.
+
+## References:
+
+- [Prompt Engineering vs Blind Prompting](https://mitchellh.com/writing/prompt-engineering-vs-blind-prompting)
+
+### Exercise 1:
+
+Please navigate and find the Langchain prompt templates used for RetrievalQAWithSources chain and how it is initalized.
+
+### Exercise 2:
+
+Please import the copied prompt scaffolds from prompt.py
+
+### Exercise 3:
+
+Please modify this chain's initiation with the proper kwargs to take in custom prompts
