@@ -57,7 +57,7 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
         #     chunk_overlap=20,
         # )
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=2000,
+            chunk_size=3000,
             chunk_overlap=100
         )
         docs = text_splitter.split_documents(documents)
@@ -163,7 +163,7 @@ async def on_chat_start():
         # callback_manager=callback_manager,
         n_gpu_layers=-1,
         n_batch=512,
-        n_ctx=4096,
+        n_ctx=5000,
         # stop=["[INST]"],
         verbose=False,
         streaming=True,
