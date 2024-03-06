@@ -161,7 +161,7 @@ async def on_chat_start():
         max_tokens=512,
         top_p=1,
         # callback_manager=callback_manager,
-        n_gpu_layers=1,
+        n_gpu_layers=64,
         n_batch=512,
         n_ctx=4096,
         # stop=["[INST]"],
