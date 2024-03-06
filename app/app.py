@@ -128,8 +128,8 @@ async def on_chat_start():
     await msg.update()
 
     model_name = "sentence-transformers/all-mpnet-base-v2"
-    # model_kwargs = {"device": "cuda"}
-    embeddings = HuggingFaceEmbeddings(model_name=model_name)
+    model_kwargs = {"device": "cuda"}
+    embeddings = HuggingFaceEmbeddings(model_name=model_name, model_kwargs=model_kwargs)
 
     try:
         search_engine = await cl.make_async(create_search_engine)(
